@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quick-Catalog</title>
+  <style>
+
+    {% if settings.colors %}
+      {% for color in settings.colors %}
+        .{{ color.name|lower }} {
+          background: {{ color.first_color }};
+          background-image: linear-gradient(90deg, {{ color.first_color }} 0%, {{ color.second_color }} 100%);
+        }
+
+        .{{ color.name|lower }} .menu__line {
+          background: {{ color.first_color }};
+        }
+
+        .{{ color.name|lower }} .menu__content {
+          background: {{ color.second_color }};
+        }
+
+        .{{ color.name|lower }} .dropdown {
+          color: {{ color.second_color }};
+        }
+
+        .{{ color.name|lower }} .dropdown__icon svg path {
+          fill: {{ color.second_color }};
+        }
+
+        .{{ color.name|lower }} .menu__content::-webkit-scrollbar-thumb,
+        .{{ color.name|lower }} .main__buttons::-webkit-scrollbar-thumb,
+        .{{ color.name|lower }} .main__content::-webkit-scrollbar-thumb,
+        .{{ color.name|lower }} .main__articles::-webkit-scrollbar-thumb {
+          background-color: {{ color.first_color }};
+        }
+      {% endfor %}
+    {% endif %}
+  </style>
+  <script defer="defer" src="assets/main.js"></script>
+  <link href="assets/styles/app.css" rel="stylesheet"></head>
+<body class="body default">
+<div class="global">
+  <header class="header">
+    <nav class="menu menu_active">
+      <div class="menu__button" tabindex="0">
+        <span class="menu__line"></span>
+        <span class="menu__line"></span>
+        <span class="menu__line"></span>
+      </div>
+      <div class="menu__content">
+        <ul class="menu__content-list">
+          {% if category %}
+            {% for item in category %}
+              <li class="menu__content-item" data-menu="{{ item.getId() }}">{{ item.getTitle() }}</li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <div class="header__settings">
+      <h1 class="header__title">Company Title</h1>
+      <div class="dropdown header__dropdown">
+        <div class="dropdown__select" data-value="default"><span class="dropdown__text">Options</span>
+          <span class="dropdown__icon">
+                <svg style="color: blue" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-triangle-fill" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z" fill="blue"></path> </svg>
+              </span>
+        </div>
+        <div class="dropdown__menu">
+          <ul class="dropdown__list">
+            {% if settings.colors %}
+              {% for color in settings.colors %}
+                <li class="dropdown__item" data-value="{{ color.name|lower }}">{{ color.name }}</li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="main">
+    <ul class="main__buttons">
+      {% if postsTitle %}
+        {% for title in postsTitle %}
+          <li class="main__button" data-menu="{{ title.id }}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="IconChangeColor" height="30" width="30"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" id="mainIconPathAttribute"></path></svg><span>{{ title.title }}</span></li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+    <div class="main__content">
+      {% if postsTitle %}
+        {{ postsTitle[0][0].getContent() }}
+      {% endif %}
+    </div>
+    <ul class="main__articles">
+      {% if postsRand %}
+        {% for post in postsRand %}
+          <li class="main__article" data-category="{{ post[0].getId() }}" data-menu="{{ post.id }}">{{ post[0].getContent()|striptags|u.truncate(190, '...', false)|raw }}</li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </main>
+</div>
+</body>
+</html>
