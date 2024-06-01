@@ -1,0 +1,24 @@
+.header {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap:40px;
+  margin-bottom: 20px;
+
+  &__title {
+    color: #ffffff;
+    font-weight: 100;
+  }
+
+  &__settings {
+    display: flex;
+    align-items: center;
+  }
+
+  &__dropdown {
+    margin-left: auto;
+  }
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 55px 1fr;
+  }
+}
