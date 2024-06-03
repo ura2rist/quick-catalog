@@ -1,4 +1,4 @@
-# Frontend building
+# Backend building
 ## build
 - Download the repository or backend folder
 - Open in the IDE
